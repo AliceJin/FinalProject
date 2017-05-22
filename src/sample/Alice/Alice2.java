@@ -1,4 +1,4 @@
-package sample;/**
+package sample.Alice;/**
  * Created by jinq7372 on 5/18/2017.
  */
 
