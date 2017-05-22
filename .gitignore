@@ -46,3 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .idea/workspace.xml
+<<<<<<< HEAD
+=======
+.idea/workspace.xml
+>>>>>>> origin/master
+.idea/workspace.xml
+*.xml
