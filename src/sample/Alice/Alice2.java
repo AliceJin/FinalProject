@@ -3,13 +3,16 @@ package sample.Alice;/**
  */
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class Alice2 extends Application {
+public class Alice2 extends Application implements EventHandler <ActionEvent> {
 
+    //user event - implement interface
     Button button;
 
     public static void main(String[] args) {
@@ -23,6 +26,9 @@ public class Alice2 extends Application {
         button = new Button();
         button.setText("Click me!");
 
+        //method to handle event is in this class
+        button.setOnAction(this);
+
         //layout
         StackPane layout = new StackPane();
         layout.getChildren().add(button);
@@ -31,5 +37,15 @@ public class Alice2 extends Application {
         Scene scene1 = new Scene(layout, 300, 250);
         primaryStage.setScene(scene1);
         primaryStage.show();
+    }
+
+    //what happens when click button
+    @Override
+    public void handle(ActionEvent event) {
+        //find source to distinguish between buttons
+        if(event.getSource() == button)
+        {
+            System.out.println("hiiiii");
+        }
     }
 }
