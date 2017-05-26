@@ -22,7 +22,7 @@ import javafx.scene.shape.Rectangle;      //
 
 /**
  * extends Parent class, allow to show on game board
- * NOTE TO GROUP MEMBERS: you have to change Alice_Board17 to
+ * NOTE TO GROUP MEMBERS: you have to change Alice_Board17 and others to
  * the appropriate class name for your file.
  */
 public class Alice_Board17 extends Parent {
@@ -38,15 +38,90 @@ public class Alice_Board17 extends Parent {
     public Alice_Board17(boolean enemy, EventHandler<? super MouseEvent> handler)
     {
         this.enemy = enemy;               //set variable equal to input
-        //loop for establishing
+        //loop for establishing number of boxes, 10 by 10
         for(int y = 0; y < 10; y++)
         {
-            HBox row = new HBox();        //
+            HBox row = new HBox();        //place boxes horizontally
+            for(int x = 0; x < 10; x++)
+            {
+                Cell c = new Cell(x, y, this);     //this refers to board
+                c.setOnMouseClicked(handler);             //trigger on mouse click
+                row.getChildren().add(c);                 //add cells as children to rows
+            }
+            rows.getChildren().add(row);                  //add row to list of rows
         }
+        getChildren().add(rows);      //add to Parent, display with javafx
     }
 
     /**
-     * each Cell represents an individual box on the grid
+     * Method function: placing a specified ship on the board with color showing where
+     * Parameters: ship, x and y coordinates as integers.
+     * Returns: boolean to show whether ship was placed.
+     */
+    public boolean placeShip(Alice_Ship17 ship, int x, int y)
+    {
+        //if statement: tests whether one can place the ship, returns false otherwise
+        if(canPlaceShip(ship, x, y))
+        {
+            int length = ship.type;     //store length in local variable
+
+            if(ship.vertical)
+            {
+                //if ship is vertical, color ship vertically along the length from y coordinate
+                for(int i = y; i < y + length; i++)
+                {
+                    Cell cell = getCell(x, i);      //current cell in loop
+                    cell.ship = ship;               //ship in cell is referenced to current ship
+                    if(!enemy)                      //if not the enemy board
+                    {
+                        cell.setFill(Color.WHITE);     //fill in white
+                        cell.setStroke(Color.GREEN);   //green border
+                    }
+                }
+            }
+            else
+            {
+                //if ship is horizontal. color ship horizontally along length from x coordinate
+                for(int i = x; i < x + length; i++)
+                {
+                    Cell cell = getCell(i, y);      //current cell in loop
+                    cell.ship = ship;               //ship in cell is referenced to current ship
+                    if(!enemy)                      //if not the enemy board
+                    {
+                        cell.setFill(Color.WHITE);     //fill in white
+                        cell.setStroke(Color.GREEN);   //green border
+                    }
+                }
+            }
+
+            return true;  //ship has been placed
+        }
+
+        return false;     //ship cannot be placed
+    }
+
+    /**
+     * Method function: return the cell at x and y coordinates
+     */
+    public Cell getCell(int x, int y)
+    {
+        //returns the cell; get row first as a whole, set as HBox, and then get cell
+        return (Cell) ((HBox)rows.getChildren().get(y)).getChildren().get(x);
+    }
+
+    /**
+     * Method function: checks whether one can place a ship according to user input.
+     * Called by the placeShip method.
+     * Parameters: ship, x and y coordinates as integers.
+     * Returns: boolean to show whether ship can be placed.
+     */
+    private boolean canPlaceShip(Alice_Ship17 ship, int x, int y)
+    {
+        
+    }
+
+    /**
+     * Class: each Cell represents an individual box on the grid
      */
     public class Cell extends Rectangle {
         public int x, y;                  //position of cell on grid

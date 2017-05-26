@@ -12,7 +12,7 @@ public class Alice_Ship17 extends Parent {
     /**
      * initial variables for the user's ships
      */
-    public int length;   //length of the ship
+    public int type;   //length of the ship
     public boolean vertical = true;    //ship orientation vertical or horizontal
     private int health;   //current health/lives of the ships
 
@@ -20,13 +20,13 @@ public class Alice_Ship17 extends Parent {
      * constructor with parameters
      * of the length (int) and the orientation (boolean) of the ship
      */
-    public Alice_Ship17(int length, boolean vertical)
+    public Alice_Ship17(int type, boolean vertical)
     {
-        //sets length and vertical as the input values
-        this.length = length;
+        //sets type and vertical as the input values
+        this.type = type;
         this.vertical = vertical;
         //initial health is the total number of squares of the ship
-        health = length;
+        health = type;
     }
 
     /**
