@@ -13,12 +13,12 @@ import java.util.List;           //allow to use Lists class
  */
 import javafx.scene.Parent;               //base class with all children in scene graph
 import javafx.event.EventHandler;         //responds to events
-import javafx.geometry.Point2D;           //
+import javafx.geometry.Point2D;           //methods dealing with points in 2 dimensions
 import javafx.scene.input.MouseEvent;     //respond to mouse input
 import javafx.scene.layout.HBox;          //a type of layout/formatting
 import javafx.scene.layout.VBox;          //another type of layout
 import javafx.scene.paint.Color;          //class to fill in color
-import javafx.scene.shape.Rectangle;      //
+import javafx.scene.shape.Rectangle;      //super class for cells
 
 /**
  * extends Parent class, allow to show on game board
@@ -117,7 +117,58 @@ public class Alice_Board17 extends Parent {
      */
     private boolean canPlaceShip(Alice_Ship17 ship, int x, int y)
     {
-        
+        int length = ship.type;       //store length in local variable
+
+        if(ship.vertical)             //if ship is meant to be vertical
+        {
+            for(int i = y; i < y + length; i++)
+            {
+                if (!isValidPoint(x, i))
+                    return false;     //if cell is not in grid, return false
+
+                Cell cell = getCell(x, i);     //if valid, get the cell
+                if(cell.ship != null)
+                    return false;              //if there is already a ship, return false
+
+                /**
+                 * NOTE by Alice: I'm not going to include the neighbors mechanism
+                 * that doesn't allow the user to place ships next to each other.
+                 */
+            }
+        }
+        else
+        {
+            for(int i = x; i < x + length; i++)
+            {
+                if (!isValidPoint(i, y))
+                    return false;     //if cell is not in grid, return false
+
+                Cell cell = getCell(i, y);     //if valid, get the cell
+                if(cell.ship != null)
+                    return false;              //if there is already a ship, return false
+            }
+        }
+    }
+
+    /**
+     * Method function: checks if point is within grid but deals with input
+     * format as a point instead of coordinates as doubles.
+     * Passes input to the overridden same method.
+     */
+    private boolean isValidPoint(Point2D point)
+    {
+        return isValidPoint(point.getX(), point.getY());  //get the x and y coordinates
+    }
+
+    /**
+     * Method function: checks if point is within grid.
+     * Parameters: x and y coordinates as doubles.
+     * Returns: boolean for whether point is valid or not.
+     */
+    private boolean isValidPoint(double x, double y)
+    {
+        //coordinates greater than/equal to zero and less than ten
+        return x >= 0 && x < 10 && y >= 0 && y < 10;
     }
 
     /**
