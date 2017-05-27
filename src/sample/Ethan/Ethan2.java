@@ -1,4 +1,4 @@
-package sample;/**
+package sample.Ethan;/**
  * Created by jinq7372 on 5/18/2017.
  */
 import javafx.application.Application;
