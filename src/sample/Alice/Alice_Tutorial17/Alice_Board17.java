@@ -148,6 +148,7 @@ public class Alice_Board17 extends Parent {
                     return false;              //if there is already a ship, return false
             }
         }
+        return true;
     }
 
     /**
