@@ -47,6 +47,20 @@ public class Board extends Parent {
                     }
                 }
             }
+            else
+            {
+                //if ship is horizontal. color ship horizontally along length from x coordinate
+                for(int i = x; i < x + length; i++)
+                {
+                    Cell cell = getCell(i, y);      //current cell in loop
+                    cell.ship = ship;               //ship in cell is referenced to current ship
+                    if(!enemy)                      //if not the enemy board
+                    {
+                        cell.setFill(Color.WHITE);     //fill in white
+                        cell.setStroke(Color.GREEN);   //green border
+                    }
+                }
+            }
         return true; //the ship is placed
         }
     return false; // the ship is not placed
