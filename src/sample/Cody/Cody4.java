@@ -3,8 +3,6 @@ package sample;/**
  */
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -20,7 +18,17 @@ public class Cody4 extends Application  {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        window = primaryStage;
+        window.setTitle("thenewboston");
+
+        button = new Button("Click me");
+
+        StackPane layout = new StackPane();
+        layout.getChildren().add(button);
+        Scene scene = new Scene(layout, 300, 250);
+        window.setScene(scene);
+        window.show();
 
     }
 
