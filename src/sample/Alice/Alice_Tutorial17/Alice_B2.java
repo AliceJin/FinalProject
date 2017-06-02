@@ -1,4 +1,4 @@
-package sample.Alice.Alice_Tutorial17;/**
+package sample.Alice.Alice_Tutorial17; /**
  * Created by jinq7372 on 5/26/2017.
  */
 
@@ -118,6 +118,8 @@ public class Alice_B2 extends Application{
     {
         while(enemyTurn)
         {
+            //simple random AI
+            /**
             //random coordinates between 0 and 9, inclusive
             int x = random.nextInt(10);
             int y = random.nextInt(10);
@@ -127,8 +129,19 @@ public class Alice_B2 extends Application{
             {
                 continue;       //don't do anything if cell already shot
             }
+             **/
 
-            enemyTurn = cell.shoot();                 //if hit, enemy can continue turn and hit again
+            //random coordinates between 0 and 9, inclusive
+            int x = random.nextInt(10);
+            int y = random.nextInt(10);
+
+            Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
+            if(cell.wasShot)
+            {
+                continue;       //don't do anything if cell already shot, restart while loop
+            }
+
+            enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
 
             if(playerBoard.ships == 0)                //if all player's ships shot
             {
