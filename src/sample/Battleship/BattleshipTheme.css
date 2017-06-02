@@ -1,0 +1,10 @@
+
+@font-face {
+    font-family: 'ARCADECLASSIC';
+    src: url('ARCADECLASSIC.ttf');
+}
+
+.root{
+    -fx-background-color: #7CAFC2;
+    -fx-font-size: 10pt;
+}
