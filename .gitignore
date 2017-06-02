@@ -59,3 +59,7 @@ Temporary Items
 .idea/workspace.xml
 
 *.xml
+*.class
+out/production/FinalProject/sample/Ethan/Board.class
+*.class
+*.class
