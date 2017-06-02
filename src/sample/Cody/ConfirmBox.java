@@ -9,27 +9,38 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
-public class AlertBox {
+public class ConfirmBox {
 
-    public static void display(String title, String message){
+    static boolean answer;
 
+    public static boolean display(String title, String message){
         Stage window = new Stage();
-
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(300);
-
         Label label = new Label();
         label.setText(message);
-        Button closeButton = new Button("Close the window");
-        closeButton.setOnAction(event -> window.close());
+
+        Button yesButton = new Button("yes");
+        Button noButton = new Button("no");
+
+        yesButton.setOnAction(event -> {
+            answer = true;
+            window.close();
+        });
+        noButton.setOnAction(event -> {
+            answer = false;
+            window.close();
+        });
+
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label, closeButton);
+        layout.getChildren().addAll(label,yesButton,noButton);
         layout.setAlignment(Pos.CENTER);
-
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
+
+        return answer;
     }
 }
