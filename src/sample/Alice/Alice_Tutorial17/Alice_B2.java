@@ -38,6 +38,8 @@ public class Alice_B2 extends Application{
     private boolean enemyTurn = false;    //whether it is enemy's turn
 
     private Random random = new Random();  //alternative to Math.random()
+    /** */
+    private boolean findShip = false;      //whether AI needs to continue finding ship
 
     /**
      * Method function: creates layout of the boards and menu.
@@ -131,6 +133,7 @@ public class Alice_B2 extends Application{
             }
              **/
 
+
             //random coordinates between 0 and 9, inclusive
             int x = random.nextInt(10);
             int y = random.nextInt(10);
@@ -142,6 +145,7 @@ public class Alice_B2 extends Application{
             }
 
             enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
+            if(enemyTurn == true)
 
             if(playerBoard.ships == 0)                //if all player's ships shot
             {
