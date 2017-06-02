@@ -1,4 +1,6 @@
-package sample.Ethan;/**
+package sample.Ethan;
+
+/**
  * Created by jinq7372 on 5/18/2017.
  */
 import javafx.application.Application;
@@ -17,13 +19,16 @@ public class Ethan2 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("I hate my life");
+        primaryStage.setTitle("Battleship");
         button = new Button();
-        button.setText("Click me");
+        button.setText("Start Game");
+
         StackPane layout = new StackPane();
         layout.getChildren().add(button);
-        Scene scene = new Scene(layout, 300, 250);
+        Scene scene = new Scene(layout, 450, 375);
+
         primaryStage.setScene(scene);
+        scene.getStylesheets().add("sample/Ethan/Theme.css");
         primaryStage.show();
     }
 
