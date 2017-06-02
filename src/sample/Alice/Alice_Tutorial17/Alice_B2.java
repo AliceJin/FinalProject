@@ -5,23 +5,26 @@ package sample.Alice.Alice_Tutorial17; /**
 /**
  * All imports related to java
  */
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;                //random numbers
 
 /**
  * All imports related to javafx
  */
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;             //allow positioning within layout
 import javafx.scene.Parent;             //sets up a Parent class
 import javafx.scene.Scene;              //scene for display
 import javafx.scene.input.MouseButton;  //respond to left or right click on mouse
 import javafx.scene.layout.BorderPane;  //layout with 5 major divisions
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;        //boxes placed vertically
 import javafx.scene.text.Text;          //allow to display text
 import javafx.stage.Stage;
 
 import sample.Alice.Alice_Tutorial17.Alice_Board17.Cell;     //import Cell from the Board program
-
 /**
  * Class equivalent to BattleshipMain in the YouTube tutorial
  */
@@ -40,6 +43,8 @@ public class Alice_B2 extends Application{
     private Random random = new Random();  //alternative to Math.random()
     /** */
     private boolean findShip = false;      //whether AI needs to continue finding ship
+    //private boolean neighborCell = false;  //there are still neighboring cells to check
+    private Cell[] neighborsLeft = new Cell[4];     //list of neighbors left to check
 
     /**
      * Method function: creates layout of the boards and menu.
@@ -112,6 +117,8 @@ public class Alice_B2 extends Application{
             return root;           //return customized BorderPane
         }
 
+
+
     /**
      *  Method function: controlling enemy moves
      *  NOTE by Alice: I'll do this part, although Cody can do the losing message in the last if statement
@@ -120,32 +127,33 @@ public class Alice_B2 extends Application{
     {
         while(enemyTurn)
         {
-            //simple random AI
-            /**
-            //random coordinates between 0 and 9, inclusive
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
-
-            Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
-            if(cell.wasShot)
+            if(findShip)   //neighboring mode
             {
-                continue;       //don't do anything if cell already shot
+
             }
-             **/
-
-
-            //random coordinates between 0 and 9, inclusive
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
-
-            Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
-            if(cell.wasShot)
+            else           //random mode
             {
-                continue;       //don't do anything if cell already shot, restart while loop
-            }
+                //random coordinates between 0 and 9, inclusive
+                int x = random.nextInt(10);
+                int y = random.nextInt(10);
 
-            enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
-            if(enemyTurn == true)
+                Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
+                if(cell.wasShot)
+                {
+                    continue;       //don't do anything if cell already shot
+                }
+                enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
+
+                if(enemyTurn)
+                {
+                    findShip = true;                      //if it's a hit, find further cells neighboring to hit
+                    neighborsLeft = playerBoard.getNeighbors(x, y);    //get neighbors if enemy turn.
+                }
+                else
+                {
+                    findShip = false;                     //no more need to find neighboring cells.
+                }
+            }
 
             if(playerBoard.ships == 0)                //if all player's ships shot
             {

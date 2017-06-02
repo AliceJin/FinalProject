@@ -104,7 +104,7 @@ public class Alice_Board17 extends Parent {
      * @param y
      * @return array of neighboring cells
      */
-    private Cell[] getNeighbors(int x, int y) {
+    public Cell[] getNeighbors(int x, int y) {
         Point2D[] points = new Point2D[]{     //array of points around the selected cell
                 new Point2D(x - 1, y),   //left
                 new Point2D(x + 1, y),   //right
