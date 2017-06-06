@@ -27,6 +27,9 @@ public class GameMenu extends Application {
         Button button1 = new Button("Instructions");
         button1.setOnAction(e -> window.setScene(scene2));
 
+        //Button S
+        Button buttons = new Button("Start");
+
         //Layout 1 - children laid out in vertical column
         VBox layout1 = new VBox(20);
         layout1.getChildren().addAll(label1, button1);
@@ -55,6 +58,7 @@ public class GameMenu extends Application {
         VBox layout2 = new VBox(30);
         layout2.getChildren().addAll(label2, button2);
         scene2 = new Scene(layout2, 450, 400);
+
 
         //Display scene 1 at first
         window.setScene(scene1);

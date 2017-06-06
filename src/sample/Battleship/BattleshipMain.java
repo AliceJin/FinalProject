@@ -14,6 +14,8 @@ import javafx.application.Application;
 import javafx.geometry.Pos;             //allow positioning within layout
 import javafx.scene.Parent;             //sets up a Parent class
 import javafx.scene.Scene;              //scene for display
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;  //respond to left or right click on mouse
 import javafx.scene.layout.BorderPane;  //layout with 5 major divisions
 import javafx.scene.layout.VBox;        //boxes placed vertically
@@ -163,14 +165,64 @@ public class BattleshipMain extends Application {
     /**
      * Basic setup and layout for the window
      */
+
+    Stage window;
+    Scene scene1, scene2;
+    Scene scene3 = new Scene(createContent());   //content for scene is created
     @Override
     public void start(Stage primaryStage)
     {
-        Scene scene = new Scene(createContent());   //content for scene is created
-        primaryStage.setTitle("Battleship");        //title for window
-        primaryStage.setScene(scene);               //set default scene
-        primaryStage.setResizable(false);           //user can't resize the window
-        primaryStage.show();                        //displays the window
+
+        window = primaryStage;
+
+        //Button 1
+        Label label1 = new Label("Welcome to the Battleship Game!");
+        Button button1 = new Button("Instructions");
+        button1.setOnAction(e -> window.setScene(scene2));
+
+        //Button S
+        Button buttons = new Button("Start Game");
+        buttons.setOnAction(e -> window.setScene(scene3));
+
+        //Layout 1 - children laid out in vertical column
+        VBox layout1 = new VBox(20);
+        layout1.getChildren().addAll(label1, button1, buttons);
+        scene1 = new Scene(layout1, 400, 400);
+        scene1.getStylesheets().add("sample/Battleship/BattleshipTheme.css");
+
+
+        //Button 2
+        Label label2 = new Label("Instructions \n \n This is a typical Battleship game with the main goal" +
+                "\n being to sink all of the enemy ships before yours are" +
+                "\n sunk." +
+                "\n \n In this game, the bottom interface is your field while" +
+                "\n the top interface is the enemy's." +
+                "\n \n In order to place your ships, simply click on the bottom" +
+                "\n interface. To orientate your ships vertically, left click" +
+                "\n and to orientate them horizontally, right click." +
+                "\n \n In this version of the game, whenever a hit is made, " +
+                "\n the player that made the shot gets to shoot again. " +
+                "\n This means if the player successfully hits the AI," +
+                "\n the player gets to shoot until they miss without any " +
+                "\n fear of being hit themselves and vice versa for the AI");
+
+        Button button2 = new Button("Back");
+        button2.setOnAction(e -> window.setScene(scene1));
+
+        //Layout 2
+        VBox layout2 = new VBox(20);
+        layout2.getChildren().addAll(label2, button2);
+        scene2 = new Scene(layout2, 450, 400);
+
+
+        //Display scene 1 at first
+        window.setScene(scene1);
+
+
+        window.setTitle("Battleship");        //title for window
+        window.setScene(scene1);               //set default scene
+        //window.setResizable(false);           //user can't resize the window
+        window.show();                        //displays the window
     }
 
     /**
