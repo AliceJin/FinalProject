@@ -1,10 +1,10 @@
-
+package sample.Cody.Cats;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import sample.Cody.ConfirmBox;
+import sample.Cody.Cats.ConfirmBox;
 
 public class ClosingProgram extends Application  {
 
@@ -37,7 +37,7 @@ public class ClosingProgram extends Application  {
     }
 
     private void closeProgram(){
-        Boolean answer = ConfirmBox.display("Title", "Are you sure you want to exit?");
+        Boolean answer = ConfirmBox.display("YOU WIN!!!", "Are you sure you want to exit?");
         if(answer)
             window.close();
     }
