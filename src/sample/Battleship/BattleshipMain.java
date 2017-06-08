@@ -24,6 +24,7 @@ import javafx.scene.text.Text;          //allow to display text
 import javafx.stage.Stage;
 
 import sample.Battleship.Board.Cell;    //import Cell from the Board program
+import sample.Battleship.ConfirmBox;
 
 /**
  * Class equivalent to BattleshipMain in the YouTube tutorial
@@ -78,7 +79,8 @@ public class BattleshipMain extends Application {
             if(enemyBoard.ships == 0)
             {
                 System.out.println("You Win");
-                System.exit(0);         //exits immediately
+                String win = "YOU WIN!!!!!";
+                closeProgram(win);
             }
 
             //if it's the enemy's turn, smart AI
@@ -135,8 +137,9 @@ public class BattleshipMain extends Application {
 
             if(playerBoard.ships == 0)                //if all player's ships shot
             {
-                System.out.println("You Lose");
-                System.exit(0);
+                System.out.println("Im sorry you lose");
+                String status = "You lose :(" ;
+                closeProgram(status);
             }
         }
     }
@@ -224,6 +227,12 @@ public class BattleshipMain extends Application {
         window.setScene(scene1);               //set default scene
         //window.setResizable(false);           //user can't resize the window
         window.show();                        //displays the window
+    }
+
+    private void closeProgram(String status){
+        Boolean answer = ConfirmBox.display(status, "Do you want to exit?");
+        if(answer)
+            System.exit(0);
     }
 
     /**

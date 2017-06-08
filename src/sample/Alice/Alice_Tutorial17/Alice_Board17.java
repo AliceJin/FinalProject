@@ -126,6 +126,34 @@ public class Alice_Board17 extends Parent {
     }
 
     /**
+     * Method function: return an array of neighboring cells that are within the board
+     * Used for BattleshipMain for smart AI
+     * @param x
+     * @param y
+     * @return arraylist of neighboring cells
+     */
+    public ArrayList getNeighbors2(int x, int y) {
+        Point2D[] points = new Point2D[]{     //array of points around the selected cell
+                new Point2D(x - 1, y),   //left
+                new Point2D(x + 1, y),   //right
+                new Point2D(x, y - 1),   //top
+                new Point2D(x, y + 1)    //bottom
+        };
+
+        //list of neighbors
+        ArrayList<Cell> neighbors = new ArrayList<Cell>();
+
+        for (Point2D p : points) {
+            if (isValidPoint(p)) {
+                //add cell to list if valid point
+                neighbors.add(getCell((int) p.getX(), (int) p.getY()));
+            }
+        }
+
+        return neighbors;
+    }
+
+    /**
      * Method function: checks whether one can place a ship according to user input.
      * Called by the placeShip method.
      * Parameters: ship, x and y coordinates as integers.
@@ -182,7 +210,7 @@ public class Alice_Board17 extends Parent {
      * format as a point instead of coordinates as doubles.
      * Passes input to the overridden same method.
      */
-    private boolean isValidPoint(Point2D point) {
+    public boolean isValidPoint(Point2D point) {
         return isValidPoint(point.getX(), point.getY());  //get the x and y coordinates
     }
 
@@ -191,7 +219,7 @@ public class Alice_Board17 extends Parent {
      * Parameters: x and y coordinates as doubles.
      * Returns: boolean for whether point is valid or not.
      */
-    private boolean isValidPoint(double x, double y) {
+    public boolean isValidPoint(double x, double y) {
         //coordinates greater than/equal to zero and less than ten
         return x >= 0 && x < 10 && y >= 0 && y < 10;
     }
@@ -217,6 +245,19 @@ public class Alice_Board17 extends Parent {
             this.board = board;
             setFill(Color.LIGHTCORAL);        //fill in the default color for cell
             setStroke(Color.DARKSLATEBLUE);   //fill in the border for cell
+        }
+
+        /**
+         * get x and y coordinates
+         */
+        public int xCor()
+        {
+            return x;
+        }
+
+        public int yCor()
+        {
+            return y;
         }
 
         /**
