@@ -210,7 +210,7 @@ public class Alice_Board17 extends Parent {
      * format as a point instead of coordinates as doubles.
      * Passes input to the overridden same method.
      */
-    private boolean isValidPoint(Point2D point) {
+    public boolean isValidPoint(Point2D point) {
         return isValidPoint(point.getX(), point.getY());  //get the x and y coordinates
     }
 
@@ -219,7 +219,7 @@ public class Alice_Board17 extends Parent {
      * Parameters: x and y coordinates as doubles.
      * Returns: boolean for whether point is valid or not.
      */
-    private boolean isValidPoint(double x, double y) {
+    public boolean isValidPoint(double x, double y) {
         //coordinates greater than/equal to zero and less than ten
         return x >= 0 && x < 10 && y >= 0 && y < 10;
     }
