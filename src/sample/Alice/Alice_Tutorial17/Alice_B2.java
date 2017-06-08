@@ -44,7 +44,13 @@ public class Alice_B2 extends Application{
     /** */
     private boolean findShip = false;      //whether AI needs to continue finding ship
     //private boolean neighborCell = false;  //there are still neighboring cells to check
-    private Cell[] neighborsLeft = new Cell[4];     //list of neighbors left to check
+    //private Cell[] neighborsLeft = new Cell[4];     //array of neighbors left to check
+    ArrayList<Cell> neighborsLeft = new ArrayList<Cell>();     //arraylist of neighbors left to check
+    private int n = 0;     //number of neighbor cell in arraylist
+    private int currentX;
+    private int currentY;
+    private int nextX;
+    private int nextY;
 
     /**
      * Method function: creates layout of the boards and menu.
@@ -118,7 +124,6 @@ public class Alice_B2 extends Application{
         }
 
 
-
     /**
      *  Method function: controlling enemy moves
      *  NOTE by Alice: I'll do this part, although Cody can do the losing message in the last if statement
@@ -129,7 +134,25 @@ public class Alice_B2 extends Application{
         {
             if(findShip)   //neighboring mode
             {
+                while(n < neighborsLeft.size())   //run through all the neighbors
+                {
+                    if(neighborsLeft.get(n).wasShot)        //if shot, next iteration of the loop
+                    {
+                        n++;         //go to next neighbor element
+                        continue;
+                    }
+                    enemyTurn = neighborsLeft.get(n).shoot();     //shoot and set enemyTurn equal
 
+                    if(!enemyTurn)      //AI missed
+                    {
+                        n++;          //move on to next neighbor
+                        break;        //exit without changing findShip
+                    }
+                    else          //ship has been hit
+                    {
+
+                    }
+                }
             }
             else           //random mode
             {
@@ -147,7 +170,7 @@ public class Alice_B2 extends Application{
                 if(enemyTurn)
                 {
                     findShip = true;                      //if it's a hit, find further cells neighboring to hit
-                    neighborsLeft = playerBoard.getNeighbors(x, y);    //get neighbors if enemy turn.
+                    neighborsLeft = playerBoard.getNeighbors2(x, y);    //get neighbors if enemy turn.
                 }
                 else
                 {

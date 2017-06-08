@@ -214,11 +214,13 @@ public class BattleshipMain extends Application {
 
         //Layout 2
         VBox layout2 = new VBox(20);
+        //includes all the
         layout2.getChildren().addAll(label2, button2);
+        //sets the parameters of scene 2
         scene2 = new Scene(layout2, 450, 400);
 
 
-        //Display scene 1 at first
+        //Displays scene 1 at first
         window.setScene(scene1);
 
 
