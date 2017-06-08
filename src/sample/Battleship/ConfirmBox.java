@@ -5,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
+import sample.Battleship.BattleshipMain;
 
 
 /**
@@ -33,7 +34,6 @@ public class ConfirmBox {
             answer = false;
             window.close();
         });
-
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label,yesButton,noButton);

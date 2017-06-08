@@ -36,7 +36,6 @@ public class GameMenu extends Application {
         scene1 = new Scene(layout1, 400, 400);
         scene1.getStylesheets().add("sample/Battleship/BattleshipTheme.css");
 
-
         //Button 2
         Label label2 = new Label("Instructions \n \n This is a typical Battleship game with the main goal" +
                 "\n being to sink all of the enemy ships before yours are" +

@@ -51,6 +51,8 @@ public class BattleshipMain extends Application {
      **/
     private Parent createContent()
     {
+
+
         BorderPane root = new BorderPane();    //layout with 5 places: top, bottom, middle, left, right
         root.setPrefSize(600, 800);  //600 by 800 pixels for size
 
@@ -187,6 +189,7 @@ public class BattleshipMain extends Application {
         Button buttons = new Button("Start Game");
         buttons.setOnAction(e -> window.setScene(scene3));
 
+
         //Layout 1 - children laid out in vertical column
         VBox layout1 = new VBox(20);
         layout1.getChildren().addAll(label1, button1, buttons);
@@ -223,11 +226,16 @@ public class BattleshipMain extends Application {
         //Displays scene 1 at first
         window.setScene(scene1);
 
-
         window.setTitle("Battleship");        //title for window
         window.setScene(scene1);               //set default scene
         //window.setResizable(false);           //user can't resize the window
-        window.show();                        //displays the window
+        window.show();//displays the window
+
+        scene3.getStylesheets().add("sample/Battleship/BattleshipTheme.css");
+
+
+
+
     }
 
     private void closeProgram(String status){
