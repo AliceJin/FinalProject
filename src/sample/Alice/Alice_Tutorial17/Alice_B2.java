@@ -153,6 +153,7 @@ public class Alice_B2 extends Application{
 
                     }
                 }
+                findShip = false;    //
             }
             else           //random mode
             {
