@@ -1,4 +1,5 @@
-package sample.Battleship;/**
+package sample.Battleship;
+/**
  * Created by huiying on 5/26/17.
  */
 
@@ -174,7 +175,6 @@ public class BattleshipMain extends Application {
     {
 
         window = primaryStage;
-
         //Button 1
         Label label1 = new Label("Welcome to the Battleship Game!");
         Button button1 = new Button("Instructions");
@@ -189,7 +189,6 @@ public class BattleshipMain extends Application {
         layout1.getChildren().addAll(label1, button1, buttons);
         scene1 = new Scene(layout1, 400, 400);
         scene1.getStylesheets().add("sample/Battleship/BattleshipTheme.css");
-
 
         //Button 2
         Label label2 = new Label("Instructions \n \n This is a typical Battleship game with the main goal" +
