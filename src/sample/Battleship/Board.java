@@ -65,6 +65,7 @@ public class Board extends Parent {
         }
     return false; // the ship is not placed
     }
+
     public Cell getCell(int x, int y) {
         return (Cell)((HBox)rows.getChildren().get(y)).getChildren().get(x);  //returns the cell; get row first as a whole, set as HBox, and then get cell
     }
