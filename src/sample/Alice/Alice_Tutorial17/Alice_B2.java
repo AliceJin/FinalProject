@@ -41,12 +41,14 @@ public class Alice_B2 extends Application{
     private boolean enemyTurn = false;    //whether it is enemy's turn
 
     private Random random = new Random();  //alternative to Math.random()
-    /** */
+    /**
+     *  variables for smartAI in enemyMove
+     * */
     private boolean findShip = false;      //whether AI needs to continue finding ship
     private boolean contHit = false;       //found ship to continue hitting
-    //private boolean neighborCell = false;  //there are still neighboring cells to check
-    //private Cell[] neighborsLeft = new Cell[4];     //array of neighbors left to check
-    ArrayList<Cell> neighborsLeft = new ArrayList<Cell>();     //arraylist of neighbors left to check
+    private ArrayList<Cell> neighborsLeft = new ArrayList<Cell>();     //arraylist of neighbors left to check
+    //private ArrayList<Cell> neighborsCurrent = new ArrayList<Cell>();   //
+    //private ArrayList<Cell> neighborsEmpty = new ArrayList<Cell>();   //ex - arraylist of neighboring cells to avoid
     private int n = 0;     //number of neighbor cell in arraylist
     private int currentX;
     private int currentY;
@@ -140,14 +142,32 @@ public class Alice_B2 extends Application{
                         if(neighborsLeft.get(n).wasShot)        //if shot, next iteration of the loop
                         {
                             n++;         //go to next neighbor element
-                            continue;
+                            if(n < neighborsLeft.size())    //check if there are still neighbors to hit
+                            {
+                                continue;       //continue & shoot next cell
+                            }
+                            else   //all neighboring cells have been checked
+                            {
+                                n = 0;          //reset n
+                                findShip = false;    //go back to random mode
+                                break;
+                            }
                         }
                         enemyTurn = neighborsLeft.get(n).shoot();     //shoot and set enemyTurn equal
 
                         if(!enemyTurn)      //AI missed
                         {
                             n++;          //move on to next neighbor
-                            break;        //exit without changing findShip
+                            if(n < neighborsLeft.size())
+                            {
+                                break;        //exit without changing findShip
+                            }
+                            else
+                            {
+                                n = 0;               //reset n
+                                findShip = false;    //go back to random mode
+                                break;
+                            }
                         }
                         else          //AI hit
                         {
@@ -158,8 +178,9 @@ public class Alice_B2 extends Application{
                             break;                                  //exit while loop
                         }
                     }
-                while(contHit)    //continue to hit along ship until ship sunk
+                while(contHit)    //continue to hit along ship until ship sunk in one direction
                 {
+                    //System.out.println("contHit");
                     //get next cell along the length of the ship
                     int hitX = nextX + nextX - currentX;
                     int hitY = nextY + nextY - currentY;
@@ -169,6 +190,31 @@ public class Alice_B2 extends Application{
                         enemyTurn = cellTest.shoot();           //shoot the next cell
                         if(enemyTurn)    //if next cell has been hit
                         {
+                            /**
+                             * not working
+                             */
+
+                            /**
+                            neighborsCurrent = playerBoard.getNeighbors2(hitX, hitY);
+                            System.out.println("size of current: " + neighborsCurrent.size());
+                            for(int i = 0; i < neighborsCurrent.size(); i++)
+                            {
+                                if(playerBoard.isValidPoint(neighborsCurrent.get(i).xCor(),
+                                        neighborsCurrent.get(i).yCor()) && !neighborsCurrent.get(i).wasShot)
+                                {
+                                    //only add if it's a valid cell and hasn't been shot
+                                    neighborsEmpty.add(neighborsCurrent.get(i));
+                                    System.out.println("size of empty: " + neighborsEmpty.size());
+                                }
+                            }
+                            neighborsEmpty.remove(cellTest);   //remove hit cell from list
+                             **/
+
+
+                            /**
+                             *
+                             */
+
                             //increment each cell further along ship
                             currentX = nextX;
                             currentY = nextY;
@@ -176,14 +222,14 @@ public class Alice_B2 extends Application{
                             nextY = cellTest.yCor();
 
                         }
-                        else
+                        else     //failed to hit ship
                         {
                             contHit = false;           //exit loop after ship completely sunk
                             findShip = false;          //no need to continue neighboring mode anymore
                             break;                     //exit while loop
                         }
                     }
-                    else
+                    else   //not a valid point
                     {
                         contHit = false;
                         findShip = false;
@@ -202,6 +248,12 @@ public class Alice_B2 extends Application{
                 {
                     continue;       //don't do anything if cell already shot
                 }
+                /**
+                if(neighborsEmpty.indexOf(cell) >= 0)
+                {
+                    continue;       //don't do anything if cell is a neighbor of a already hit cell
+                }
+                 **/
                 enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
 
                 if(enemyTurn)
@@ -216,12 +268,11 @@ public class Alice_B2 extends Application{
                     findShip = false;                     //no more need to find neighboring cells.
                 }
             }
-
-            if(playerBoard.ships == 0)                //if all player's ships shot
-            {
-                System.out.println("You Lose");
-                System.exit(0);
-            }
+        }
+        if(playerBoard.ships == 0)                //if all player's ships shot
+        {
+            System.out.println("You Lose");
+            System.exit(0);
         }
     }
 
@@ -256,7 +307,7 @@ public class Alice_B2 extends Application{
             Scene scene = new Scene(createContent());   //content for scene is created
             primaryStage.setTitle("Battleship");        //title for window
             primaryStage.setScene(scene);               //set default scene
-            primaryStage.setResizable(false);           //user can't resize the window
+            //primaryStage.setResizable(false);           //user can't resize the window
             primaryStage.show();                        //displays the window
         }
 
