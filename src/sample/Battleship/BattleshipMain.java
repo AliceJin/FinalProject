@@ -6,6 +6,7 @@ package sample.Battleship;
 /**
  * All imports related to java
  */
+import java.util.ArrayList;             //arraylist methods
 import java.util.Random;                //random numbers
 
 /**
@@ -44,20 +45,31 @@ public class BattleshipMain extends Application {
     private Random random = new Random();  //alternative to Math.random()
 
     /**
+     *  variables for smartAI in enemyMove() method
+     * */
+    private boolean findShip = false;      //whether AI needs to continue to find ship
+    private boolean contHit = false;       //found ship to continue hitting in certain direction
+    private ArrayList<Cell> neighborsLeft = new ArrayList<Cell>();     //arraylist of neighbors left to check
+    private int n = 0;        //number of neighbor cell in arraylist currently at during loop
+    private int currentX;     //current x coordinates
+    private int currentY;     //current y coordinates
+    private int nextX;        //x coordinates of next cell to hit
+    private int nextY;        //y coordinates of next cell to hit
+
+    /**
      * Method function: creates layout of the boards and menu.
      * determines how the program responds as the game progresses.
      * Display winning message and end game.
      *
-     * NOTE by Alice: you guys should work on this part mainly for the next two weeks
      **/
     private Parent createContent()
     {
 
 
         BorderPane root = new BorderPane();    //layout with 5 places: top, bottom, middle, left, right
-        root.setPrefSize(600, 800);  //600 by 800 pixels for size
+        root.setPrefSize(700, 900);  //600 by 800 pixels for size
 
-        root.setRight(new Text("Right Sidebar - Controls"));   //set text for right portion
+        //root.setRight(new Text(" "));   //set text for right portion
 
         //sets 2 boards with different handlers, respond to mouse click
         enemyBoard = new Board(true, event -> {
@@ -76,8 +88,6 @@ public class BattleshipMain extends Application {
             enemyTurn = !cell.shoot();
 
             //all enemy ships sunk and user wins.
-            //NOTE by Alice: You guys can make this part more exciting & display directly on window
-            //also make a replay option possible like how the guy said in the tutorial
             if(enemyBoard.ships == 0)
             {
                 System.out.println("You Win");
@@ -86,7 +96,6 @@ public class BattleshipMain extends Application {
             }
 
             //if it's the enemy's turn, smart AI
-            //NOTE by Alice: I will be primarily working with this part
             if(enemyTurn)
             {
                 enemyMove();
@@ -109,7 +118,7 @@ public class BattleshipMain extends Application {
             }
         });
 
-        VBox vbox = new VBox(50, enemyBoard,playerBoard);  //50 pixels of space inbetween
+        VBox vbox = new VBox(50, enemyBoard, playerBoard);  //50 pixels of space inbetween
         vbox.setAlignment(Pos.CENTER);         //set to center of screen
 
         root.setCenter(vbox);                  //set to center of window layout
@@ -118,31 +127,124 @@ public class BattleshipMain extends Application {
     }
 
     /**
-     *  Method function: controlling enemy moves
-     *  NOTE by Alice: I'll do this part, although Cody can do the losing message in the last if statement
+     *  Method function: controlling enemy moves with a semi-smart AI
+     *  Will randomly select points to hit until a single cell is hit.
+     *  Will check all valid neighboring cells until the ship orientation can be deduced.
+     *  Will continue to hit in single direction until AI misses.
      */
     private void enemyMove()
     {
         while(enemyTurn)
         {
-            //random coordinates between 0 and 9, inclusive
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
-
-            Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
-            if(cell.wasShot)
+            if(findShip)   //neighboring mode
             {
-                continue;       //don't do anything if cell already shot
+                while(n < neighborsLeft.size())   //run through all the neighbors of current cell
+                {
+                    if(neighborsLeft.get(n).wasShot)    //if shot, next iteration of the loop or stop if done
+                    {
+                        n++;                            //go to the next neighbor element
+                        if(n < neighborsLeft.size())    //check if there are still neighbors to hit
+                        {
+                            continue;       //if there are; continue & shoot next cell
+                        }
+                        else   //all neighboring cells have been checked
+                        {
+                            n = 0;               //reset n
+                            findShip = false;    //go back to random mode
+                            break;               //leave while loop
+                        }
+                    }
+                    enemyTurn = neighborsLeft.get(n).shoot();     //shoot and set enemyTurn equal to result
+
+                    if(!enemyTurn)      //AI missed
+                    {
+                        n++;                           //move on to next neighbor
+                        if(n < neighborsLeft.size())   //check if there are still neighbors to hit
+                        {
+                            break;        //exit without changing findShip, continue check with same cell
+                        }
+                        else   //all neighboring cells have been checked
+                        {
+                            n = 0;               //reset n
+                            findShip = false;    //go back to random mode
+                            break;               //leave while loop
+                        }
+                    }
+                    else                //AI hit
+                    {
+                        nextX = neighborsLeft.get(n).xCor();    //set next cell to be the cell that was hit
+                        nextY = neighborsLeft.get(n).yCor();
+                        contHit = true;                         //contHit mode - hit along the ship orientation
+                        n = 0;                                  //reset n
+                        break;                                  //exit while loop
+                    }
+                }
+                while(contHit)    //continue to hit along ship in one direction until a miss
+                {
+                    //System.out.println("contHit");
+
+                    //get next cell along the length of the ship - figure out proper direction
+                    int hitX = nextX + nextX - currentX;
+                    int hitY = nextY + nextY - currentY;
+                    if(playerBoard.isValidPoint((double) hitX,(double) hitY))      //check if valid point
+                    {
+                        Cell cellTest = playerBoard.getCell(hitX, hitY);           //get cell
+                        enemyTurn = cellTest.shoot();                              //shoot the cell
+                        if(enemyTurn)    //if next cell has been hit
+                        {
+                            //increment each cell further along ship
+                            currentX = nextX;
+                            currentY = nextY;
+                            nextX = cellTest.xCor();    //next coordinates are set as the cell that just been hit
+                            nextY = cellTest.yCor();
+
+                        }
+                        else     //failed to hit ship
+                        {
+                            contHit = false;           //no need for contHit mode
+                            findShip = false;          //no need to continue neighboring mode anymore
+                            break;                     //exit while loop
+                        }
+                    }
+                    else   //not a valid point - ship near board boundary
+                    {
+                        contHit = false;        //no need for contHit
+                        findShip = false;       //no need to continue neighboring mode
+                        break;                  //exit while loop
+                    }
+                }
             }
-
-            enemyTurn = cell.shoot();                 //if hit, enemy can continue turn and hit again
-
-            if(playerBoard.ships == 0)                //if all player's ships shot
+            else           //random mode - default mode
             {
-                System.out.println("Im sorry you lose");
-                String status = "You lose :(" ;
-                closeProgram(status);
+                //random coordinates between 0 and 9, inclusive
+                int x = random.nextInt(10);
+                int y = random.nextInt(10);
+
+                Cell cell = playerBoard.getCell(x, y);    //get player cell at the random coordinates
+                if(cell.wasShot)
+                {
+                    continue;       //don't do anything if cell already shot
+                }
+                enemyTurn = cell.shoot();                 //hits ship; if hit, enemy can continue turn and hit again
+
+                if(enemyTurn)
+                {
+                    findShip = true;                      //if it's a hit, switch to neighboring mode
+                    currentX = x;                         //current coordinates of cell
+                    currentY = y;
+                    neighborsLeft = playerBoard.getNeighbors2(x, y);    //get neighbors of the cell
+                }
+                else
+                {
+                    findShip = false;                     //no more need to find neighboring cells to hit
+                }
             }
+        }
+        if(playerBoard.ships == 0)                //if all player's ships shot
+        {
+            System.out.println("Im sorry you lose");
+            String status = "You lose :(" ;
+            closeProgram(status);
         }
     }
 
